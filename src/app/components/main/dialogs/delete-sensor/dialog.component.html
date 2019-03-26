@@ -1,0 +1,8 @@
+<h1 mat-dialog-title>{{data.title}}</h1>
+<div mat-dialog-content>
+  <p>{{data.message}}</p>
+</div>
+<div class="mat-dialog-actions">
+  <button mat-flat-button color="warn" (click)="closeDialog()">Cancel</button>
+  <button mat-flat-button color="accept" [mat-dialog-close]="data.sensor.id">Accept</button>
+</div>

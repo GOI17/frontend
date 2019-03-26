@@ -1,0 +1,19 @@
+<h1 mat-dialog-title>{{data.title}}</h1>
+<div mat-dialog-content>
+  <form [formGroup]="editStationForm" (ngSubmit)="editStationForm.valid" novalidate>
+    <mat-form-field appearance="outline">
+      <mat-label>Description</mat-label>
+      <input id="description" matInput formControlName="description" [(ngModel)]="station.description" type="text">
+      <mat-hint>{{data.station.description}}</mat-hint>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Ip Address</mat-label>
+      <input id="ipAddress" matInput formControlName="ipAddress" [(ngModel)]="station.ipAddress" type="text">
+      <mat-hint>{{data.station.ipAddress}}</mat-hint>
+    </mat-form-field>
+    <div class="align-items-center">
+        <button mat-flat-button color="warn" (click)="closeDialog()">Cancel</button>
+        <button mat-flat-button color="accept" type="submit" (click)="formValidator()" [mat-dialog-close]="station" [disabled]="!editStationForm.valid">Accept</button>
+    </div>
+  </form>
+</div>
