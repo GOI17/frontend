@@ -1,24 +1,22 @@
 <div class="container-fluid bg">
   <div class="row">
-    <div class="col"></div>
-    <div class="col-xl-5 col-lg-5 col-md-5 col-sm-5 col-xs-5">
-      <!-- form -->
-      <form class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12 form-container">
-        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12 logo">
-          <img src="../../../assets/img/logo.png" width="285px">
+    <div class="col-12 col-xl-5 col-lg-5 col-md-7 mx-auto">
+      <form class="form-container">
+        <div class="logo">
+          <img src="../../../assets/img/logo.png">
         </div>
         <div class="row">
-          <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 btn-user">
-            <button class="btn btn-light" [routerLink]="['/admin/dashboard']">
-              <img src="../../../assets/img/admin.png" width="165px">
+          <div class="col-12 col-xl-6 mt-3 btn-user">
+            <button class="btn btn-light" [routerLink]="['../login']">
+              <img src="../../../assets/img/admin.png">
               <h5>
                 <span class="label label-success">Administrator</span>
               </h5>
             </button>
           </div>
-          <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 btn-user">
-            <button class="btn btn-light" [routerLink]="['/user/dashboard']">
-              <img src="../../../assets/img/client.png" width="165px">
+          <div class="col-12 col-xl-6 mt-3 btn-user">
+            <button class="btn btn-light" [routerLink]="['../login']">
+              <img src="../../../assets/img/client.png">
               <h5>
                 <span class="label label-success">Client</span>
               </h5> 
@@ -27,6 +25,5 @@
         </div>
       </form>
     </div>
-    <div class="col"></div>
   </div>
 </div>

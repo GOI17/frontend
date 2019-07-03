@@ -2,6 +2,33 @@
     text-align: center;
 }
 
+.logo img {
+    width: 285px;    
+}
+
 .btn-user {
     text-align: center;
+}
+
+.btn-user button img {
+    width: 165px;
+}
+
+
+/* 
+
+    Media queries
+
+*/
+
+@media screen and (max-width: 1000px) {
+    .logo img {
+        width: 195px;
+    }
+}
+
+@media screen and (max-width: 780px) {
+    .logo img {
+        width: 115px;
+    }
 }
