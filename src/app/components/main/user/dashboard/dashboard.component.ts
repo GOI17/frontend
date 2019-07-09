@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core'
-import { Chart } from "chart.js"
+import { Chart, ChartOptions } from "chart.js"
 import { ProvidersService } from "src/app/services/providers.service"
 import { MatPaginator, MatTableDataSource, MatSort, MatSnackBar } from '@angular/material';
 import { Reading } from 'src/app/models/reading';
@@ -118,7 +118,7 @@ export class DashboardComponent implements OnInit {
       }
     }
 
-    let options = {
+    let options: ChartOptions = {
       maintainAspectRatio: true,
       responsive: true,
       legend: {
@@ -172,8 +172,7 @@ export class DashboardComponent implements OnInit {
               borderColor: 'red',
               borderWidth: 4,
               pointBackgroundColor: 'red',
-              fill: false,
-              reverse: false
+              fill: false
             },
             {
               label: 'Powder',

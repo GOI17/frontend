@@ -9,12 +9,54 @@
     </div>
   </div>
 
+  <div class="row mb-3">
+    <div class="col-3">
+      <div class="card text-center">
+        <div class="card-header">
+          Temperature
+        </div>
+        <div class="card-body">
+          <h1>{{station.temperature}}</h1>
+        </div>
+      </div>
+    </div>
+    <div class="col-3">
+      <div class="card text-center">
+        <div class="card-header">
+          Dust
+        </div>
+        <div class="card-body">
+          <h1>{{station.dust}}</h1>
+        </div>
+      </div>
+    </div>
+    <div class="col-3">
+      <div class="card text-center">
+        <div class="card-header">
+          Humidity
+        </div>
+        <div class="card-body">
+          <h1>{{station.humidity}}</h1>
+        </div>
+      </div>
+    </div>
+    <div class="col-3">
+      <div class="card text-center">
+        <div class="card-header">
+          Wind Quality
+        </div>
+        <div class="card-body">
+          <h1>{{station.windQuality}}</h1>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div class="card chart-container">
     <canvas id="chart"></canvas>
   </div>
 
-  <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom"
-    *ngIf="!showSpinner">
+  <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
     <div class="col-5">
       <h2>{{tbTitle}}</h2>
     </div>

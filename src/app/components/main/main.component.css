@@ -1,7 +1,21 @@
-.logo {
-    text-align: center;
-}
-
 .btn-user {
     text-align: center;
 }
+
+.btn-user button img {
+    width: 165px;
+}
+
+
+/* 
+
+    Media queries
+
+*/
+
+@media screen and (max-width: 1000px) {
+    .btn-user button img {
+        width: 165px;
+    }
+}
+

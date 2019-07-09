@@ -1,8 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core'
-import { Chart } from "chart.js"
+import { Chart, ChartOptions } from "chart.js"
 import { ProvidersService } from "src/app/services/providers.service"
 import { MatPaginator, MatTableDataSource, MatSort, MatSnackBar } from '@angular/material';
 import { Reading } from 'src/app/models/reading';
+import { Station } from 'src/app/models/station';
 import io from "socket.io-client"
 const socket = io('http://localhost:3000')
 import 'chartjs-plugin-datalabels'
@@ -22,6 +23,7 @@ export class DashboardComponent implements OnInit {
   chart: any = []
   readings: Reading[] = []
   stations: any = []
+  station: Station = new Station()
   id: number
   timer: any
   dataSource
@@ -77,6 +79,15 @@ export class DashboardComponent implements OnInit {
 
   readingsInit(id: number) {
     this.id = id
+    this._provider.getStationReadings(id).subscribe(
+      res =>  {
+        this.station.temperature = res['response'][0].temperature
+        this.station.dust = res['response'][0].powder
+        this.station.humidity = res['response'][0].humidity
+        this.station.windQuality = res['response'][0].windQuality
+      },
+      err => console.log(err)
+    )
     this._provider.getStationReadingsLimit(id).subscribe(
       res => {
         this.readings = res['response']
@@ -118,7 +129,7 @@ export class DashboardComponent implements OnInit {
       }
     }
 
-    let options = {
+    let options: ChartOptions = {
       maintainAspectRatio: true,
       responsive: true,
       legend: {
@@ -172,8 +183,7 @@ export class DashboardComponent implements OnInit {
               borderColor: 'red',
               borderWidth: 4,
               pointBackgroundColor: 'red',
-              fill: false,
-              reverse: false
+              fill: false
             },
             {
               label: 'Powder',
