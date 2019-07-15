@@ -1,7 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { Station } from '../../../../models/station'
+import { Station } from 'src/app/models/station'
 
 @Component({
   selector: 'app-dialog',

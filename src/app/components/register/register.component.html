@@ -1,0 +1,43 @@
+<div class="container-fluid bg">
+  <div class="row h-100 align-items-center">
+    <div class="col-12 col-xl-3 col-lg-3 col-md-7 mx-auto">
+      <div class="card login-card">
+        <div class="card-header text-center">
+          <h1>Welcome!</h1>
+        </div>
+        <div class="card-body">
+          <form [formGroup]="registerForm" (ngSubmit)="registerForm.valid" novalidate>
+            <mat-form-field appearance="outline">
+              <mat-label>First Name</mat-label>
+              <input id="firstName" matInput formControlName="firstName" [(ngModel)]="user.firstName" type="text">
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Last Name</mat-label>
+              <input id="lastName" matInput formControlName="lastName" [(ngModel)]="user.lastName" type="text">
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Email</mat-label>
+              <input id="email" matInput formControlName="email" [(ngModel)]="user.email" type="email">
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Confirm Email</mat-label>
+              <input id="confirmEmail" matInput formControlName="confirmEmail" type="email">
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Password</mat-label>
+              <input id="password" matInput formControlName="password" [(ngModel)]="user.password" type="password">
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Confirm Password</mat-label>
+              <input id="confirmPassword" matInput formControlName="confirmPassword" type="password">
+            </mat-form-field>
+            <div class="text-center">
+              <a mat-flat-button [routerLink]="['../login']">login</a>
+              <button mat-flat-button color="accept" type="submit" [disabled]="!registerForm.valid">Register</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

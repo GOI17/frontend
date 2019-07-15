@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core'
-import { ProvidersService } from "src/app/services/providers.service"
 import { MatDialog, MatSnackBar } from "@angular/material";
 import { DialogComponent as AddDialogComponent } from '../../dialogs/add-station/dialog.component';
 import { DialogComponent as DeleteDialogComponent } from '../../dialogs/delete-station/dialog.component';
 import { DialogComponent as EditDialogComponent } from '../../dialogs/edit-station/dialog.component';
 import { Station } from 'src/app/models/station';
+import { StationsProviders } from 'src/app/services/stations.service';
 
 @Component({
   selector: 'app-stations',
@@ -17,14 +17,14 @@ export class StationsComponent implements OnInit {
   stations: any = []
   showSpinner: boolean = true
 
-  constructor(private _provider: ProvidersService, private dialog: MatDialog, private snackBar: MatSnackBar) { }
+  constructor(private stationsProvider: StationsProviders, private dialog: MatDialog, private snackBar: MatSnackBar) { }
 
   ngOnInit() {
     this.stationsInit()
   }
 
   stationsInit() {
-    this._provider.getStations().subscribe(
+    this.stationsProvider.getStations().subscribe(
       res => {
         this.stations = res['response']
         this.showSpinner = false
@@ -90,7 +90,7 @@ export class StationsComponent implements OnInit {
   }
 
   addStation(data: Station) {
-    this._provider.postStation(data).subscribe(
+    this.stationsProvider.postStation(data).subscribe(
       res => {
         this.showSnackBar(res['response'])
         this.stationsInit()
@@ -100,7 +100,7 @@ export class StationsComponent implements OnInit {
   }
   
   deleteStation(id: number) {
-    this._provider.deleteStation(id).subscribe(
+    this.stationsProvider.deleteStation(id).subscribe(
       res => {
         this.showSnackBar(res['response'])
         this.stationsInit()
@@ -110,7 +110,7 @@ export class StationsComponent implements OnInit {
   }
 
   editStation(data: Station) {
-    this._provider.putStation(data).subscribe(
+    this.stationsProvider.putStation(data).subscribe(
       res => {
         console.log(res)
         this.showSnackBar(res['response'])

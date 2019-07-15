@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core'
-import { ProvidersService } from 'src/app/services/providers.service'
 import { DialogComponent as AddDialogComponent } from '../../dialogs/add-sensor/dialog.component';
 import { DialogComponent as DeleteDialogComponent } from '../../dialogs/delete-sensor/dialog.component';
 import { DialogComponent as EditDialogComponent } from '../../dialogs/edit-sensor/dialog.component';
 import { MatDialog, MatSnackBar } from '@angular/material';
 import { Sensor } from 'src/app/models/sensor';
+import { SensorsProviders } from 'src/app/services/sensors.service';
+import { StationsProviders } from 'src/app/services/stations.service';
 
 @Component({
   selector: 'app-sensors',
@@ -18,7 +19,7 @@ export class SensorsComponent implements OnInit {
   stations: any = []
   showSpinner: boolean = true
 
-  constructor(private _provider: ProvidersService, private dialog: MatDialog, private snackBar: MatSnackBar) { }
+  constructor(private sensorsProvider: SensorsProviders, private stationsProvider: StationsProviders, private dialog: MatDialog, private snackBar: MatSnackBar) { }
 
   ngOnInit() {
     this.sensorsInit()
@@ -26,7 +27,7 @@ export class SensorsComponent implements OnInit {
   }
 
   sensorsInit() {
-    this._provider.getSensors().subscribe(
+    this.sensorsProvider.getSensors().subscribe(
       res => {
         this.sensors = res['response']
         this.showSpinner = false
@@ -36,7 +37,7 @@ export class SensorsComponent implements OnInit {
   }
 
   stationsInit() {
-    this._provider.getStations().subscribe(
+    this.stationsProvider.getStations().subscribe(
       res => {
         this.stations = res['response']
         this.showSpinner = false
@@ -104,7 +105,7 @@ export class SensorsComponent implements OnInit {
   }
 
   addSensor(data: Sensor) {
-    this._provider.postSensor(data).subscribe(
+    this.sensorsProvider.postSensor(data).subscribe(
       res => {
         console.log(res)
         this.showSnackBar(res['response'])
@@ -116,7 +117,7 @@ export class SensorsComponent implements OnInit {
   }
 
   deleteSensor(id: number) {
-    this._provider.deleteSensor(id).subscribe(
+    this.sensorsProvider.deleteSensor(id).subscribe(
       res => {
         console.log(res)
         this.showSnackBar(res['response'])
@@ -128,7 +129,7 @@ export class SensorsComponent implements OnInit {
   }
 
   editSensor(data: Sensor) {
-    this._provider.putSensor(data).subscribe(
+    this.sensorsProvider.putSensor(data).subscribe(
       res => {
         console.log(res)
         this.showSnackBar(res['response'])
