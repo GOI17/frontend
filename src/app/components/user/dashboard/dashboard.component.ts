@@ -6,6 +6,8 @@ import { Reading } from 'src/app/models/reading';
 import io from "socket.io-client"
 const socket = io('http://localhost:3000')
 import 'chartjs-plugin-datalabels'
+import { StationsProviders } from 'src/app/services/stations.service';
+import { ReadingsProvider } from 'src/app/services/readings.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -26,7 +28,7 @@ export class DashboardComponent implements OnInit {
   timer: any
   dataSource
 
-  constructor(private _provider: ProvidersService, private snackBar: MatSnackBar) { }
+  constructor(private stationsProvider: StationsProviders, private readingsProvider: ReadingsProvider, private snackBar: MatSnackBar) { }
 
   ngOnInit() {
     this.stationsInit()
@@ -65,7 +67,7 @@ export class DashboardComponent implements OnInit {
   }
 
   stationsInit() {
-    this._provider.getStations().subscribe(
+    this.stationsProvider.getStations().subscribe(
       res => {
         this.stations = res['response']
         this.id = this.stations[0]['id']
@@ -77,7 +79,7 @@ export class DashboardComponent implements OnInit {
 
   readingsInit(id: number) {
     this.id = id
-    this._provider.getStationReadingsLimit(id).subscribe(
+    this.readingsProvider.getStationReadingsLimit(id).subscribe(
       res => {
         this.readings = res['response']
         let temperature = res['response'].map(res => res.temperature)
@@ -93,7 +95,7 @@ export class DashboardComponent implements OnInit {
   }
 
   tableInit() {
-    this._provider.getStationReadings(this.id).subscribe(
+    this.readingsProvider.getStationReadings(this.id).subscribe(
       res => {
         console.log(res)
         this.readings = res["response"]

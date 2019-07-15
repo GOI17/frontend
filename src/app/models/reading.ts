@@ -1,4 +1,4 @@
-export interface Reading {
+export class Reading {
     id?: number;
     date?: string;
     idStation?: number;
