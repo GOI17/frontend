@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core'
-import { DialogComponent as AddDialogComponent } from '../../dialogs/add-sensor/dialog.component';
-import { DialogComponent as DeleteDialogComponent } from '../../dialogs/delete-sensor/dialog.component';
-import { DialogComponent as EditDialogComponent } from '../../dialogs/edit-sensor/dialog.component';
+import { DialogComponent as AddDialogComponent } from 'src/app/components/dialogs/add-sensor/dialog.component';
+import { DialogComponent as DeleteDialogComponent } from 'src/app/components/dialogs/delete-sensor/dialog.component';
+import { DialogComponent as EditDialogComponent } from 'src/app/components/dialogs/edit-sensor/dialog.component';
 import { MatDialog, MatSnackBar } from '@angular/material';
 import { Sensor } from 'src/app/models/sensor';
 import { SensorsProviders } from 'src/app/services/sensors.service';
@@ -71,7 +71,7 @@ export class SensorsComponent implements OnInit {
       data: {
         title: `Delete ${sensor.description}`,
         message: 'Are you sure?',
-        sensor: sensor 
+        sensor: sensor
       }
     })
 
