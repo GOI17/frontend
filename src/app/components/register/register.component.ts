@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { User } from 'src/app/models/user';
+import { UsersProvider } from 'src/app/services/users.services';
 
 @Component({
   selector: 'app-register',
@@ -12,7 +13,7 @@ export class RegisterComponent implements OnInit {
   user: User = new User()
   registerForm: FormGroup
 
-  constructor(private formBuilder: FormBuilder) { }
+  constructor(private formBuilder: FormBuilder, private userProvider: UsersProvider) { }
 
   ngOnInit() {
     this.registerForm = this.formBuilder.group({
@@ -47,6 +48,13 @@ export class RegisterComponent implements OnInit {
         Validators.minLength(5)
       ]]
     })
+  }
+
+  register(userData: User) {
+    console.log(`Hello: ${userData.firstName} ${userData.lastName}`)
+    console.log(`Hello: ${userData.email}`)
+    console.log(`Hello: ${userData.password}`)
+    this.userProvider.createUser(userData).subscribe(res => console.log(res))
   }
 
 }

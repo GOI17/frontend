@@ -9,9 +9,9 @@ import { AdminComponent } from './components/admin/admin.component';
 import { UserComponent } from './components/user/user.component';
 import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
-import { SensorsComponent as SensorsAdminComponent} from './components/admin/sensors/sensors.component';
-import { DashboardComponent as DashboardAdminComponent} from './components/admin/dashboard/dashboard.component';
-import { StationsComponent as StationsAdminComponent} from './components/admin/stations/stations.component';
+import { SensorsComponent as SensorsAdminComponent } from './components/sensors/sensors.component';
+import { DashboardComponent as DashboardAdminComponent } from './components/dashboard/dashboard.component';
+import { StationsComponent as StationsAdminComponent } from './components/stations/stations.component';
 import { SensorsComponent as SensorsUserComponent } from './components/user/sensors/sensors.component';
 import { DashboardComponent as DashboardUserComponent } from './components/user/dashboard/dashboard.component';
 import { StationsComponent as StationsUserComponent } from './components/user/stations/stations.component';
@@ -39,6 +39,7 @@ import {
   MatSnackBarModule
 } from '@angular/material';
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
+import { UsersProvider } from './services/users.services';
 
 @NgModule({
   declarations: [
@@ -90,7 +91,7 @@ import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
     DeleteSensorDialogComponent,
     EditSensorDialogComponent
   ],
-  providers: [ProvidersService],
+  providers: [UsersProvider],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

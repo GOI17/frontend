@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core'
 import { MatDialog, MatSnackBar } from "@angular/material";
-import { DialogComponent as AddDialogComponent } from '../../dialogs/add-station/dialog.component';
-import { DialogComponent as DeleteDialogComponent } from '../../dialogs/delete-station/dialog.component';
-import { DialogComponent as EditDialogComponent } from '../../dialogs/edit-station/dialog.component';
+import { DialogComponent as AddDialogComponent } from 'src/app/components/dialogs/add-station/dialog.component';
+import { DialogComponent as DeleteDialogComponent } from 'src/app/components/dialogs/delete-station/dialog.component';
+import { DialogComponent as EditDialogComponent } from 'src/app/components/dialogs/edit-station/dialog.component';
 import { Station } from 'src/app/models/station';
 import { StationsProviders } from 'src/app/services/stations.service';
 
@@ -50,7 +50,7 @@ export class StationsComponent implements OnInit {
       }
     })
   }
-  
+
   deleteStationDialog(station) {
     const dialogRef = this.dialog.open(DeleteDialogComponent, {
       width: '450px',
@@ -69,7 +69,7 @@ export class StationsComponent implements OnInit {
       }
     })
   }
-  
+
   editStationDialog(station) {
     const dialogRef = this.dialog.open(EditDialogComponent, {
       width: '450px',
@@ -98,7 +98,7 @@ export class StationsComponent implements OnInit {
       err => console.error(err)
     )
   }
-  
+
   deleteStation(id: number) {
     this.stationsProvider.deleteStation(id).subscribe(
       res => {
