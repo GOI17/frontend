@@ -1,21 +1,33 @@
-<h1 mat-dialog-title>{{data.title}}</h1>
+<h1 mat-dialog-title>{{ data.title }}</h1>
 <div mat-dialog-content>
-  <form [formGroup]="addSensorForm" (ngSubmit)="addSensorForm.valid" novalidate>
+  <form
+    [formGroup]="addSensorForm"
+    (ngSubmit)="(addSensorForm.valid)"
+    novalidate
+  >
     <mat-form-field appearance="outline">
       <mat-label>Description</mat-label>
-      <input id="description" matInput formControlName="description" [(ngModel)]="sensor.description" type="text">
-    </mat-form-field>
-    <mat-form-field appearance="outline">
-      <mat-label>Station</mat-label>
-      <mat-select id="station" formControlName="station" [(ngModel)]="sensor.idStation">
-        <mat-option *ngFor="let station of data.stations" [value]="station.id">
-          {{station.description}}
-        </mat-option>
-      </mat-select>
+      <input
+        id="description"
+        matInput
+        formControlName="description"
+        [(ngModel)]="sensor.description"
+        type="text"
+      />
     </mat-form-field>
     <div class="align-items-center">
-        <button mat-flat-button color="warn" (click)="closeDialog()">Cancel</button>
-        <button mat-flat-button color="accept" type="submit" [mat-dialog-close]="sensor" [disabled]="!addSensorForm.valid">Accept</button>
+      <button mat-flat-button color="warn" (click)="closeDialog()">
+        Cancel
+      </button>
+      <button
+        mat-flat-button
+        color="accept"
+        type="submit"
+        [mat-dialog-close]="sensor"
+        [disabled]="!addSensorForm.valid"
+      >
+        Accept
+      </button>
     </div>
   </form>
 </div>

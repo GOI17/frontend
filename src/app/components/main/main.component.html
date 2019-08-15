@@ -1,0 +1,67 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <a href="/home"><img width="70" src="../../../assets/img/logo.png"/></a>
+  <button
+    class="navbar-toggler"
+    type="button"
+    data-toggle="collapse"
+    data-target="#navbar"
+    aria-controls="navbar"
+    aria-expanded="false"
+    aria-label="Toggle navigation"
+  >
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbar">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <a
+          class="nav-link"
+          style="cursor:pointer"
+          (click)="showComponent = 'dashboard'"
+          [ngClass]="{ active: showComponent == 'dashboard' }"
+          >Dashboard</a
+        >
+      </li>
+      <li class="nav-item">
+        <a
+          class="nav-link"
+          style="cursor:pointer"
+          (click)="showComponent = 'stations'"
+          [ngClass]="{ active: showComponent == 'stations' }"
+          >Stations</a
+        >
+      </li>
+      <li class="nav-item">
+        <a
+          class="nav-link"
+          style="cursor:pointer"
+          (click)="showComponent = 'sensors'"
+          [ngClass]="{ active: showComponent == 'sensors' }"
+          >Sensors</a
+        >
+      </li>
+    </ul>
+    <ul class="navbar-nav">
+      <a class="nav-link" style="cursor:pointer" *ngIf="auth.loggedIn()"
+        >Hello, {{ auth.getUserInfo().firstName }}
+        {{ auth.getUserInfo().lastName }}</a
+      >
+    </ul>
+    <ul class="navbar-nav">
+      <a
+        class="nav-link"
+        style="cursor:pointer"
+        *ngIf="auth.loggedIn()"
+        (click)="auth.logout()"
+        >Logout</a
+      >
+    </ul>
+  </div>
+</nav>
+<div class="container" [ngSwitch]="showComponent">
+  <app-dashboard *ngSwitchCase="'dashboard'"></app-dashboard>
+  <app-sensors *ngSwitchCase="'sensors'"></app-sensors>
+  <app-stations *ngSwitchCase="'stations'"></app-stations>
+  <app-dashboard *ngSwitchDefault></app-dashboard>
+</div>
