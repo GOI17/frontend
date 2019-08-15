@@ -7,11 +7,10 @@ import { AuthService } from "src/app/services/auth.service";
   styleUrls: ["./main.component.css"]
 })
 export class MainComponent implements OnInit {
-  private showComponent = "dashboard";
+  showComponent = "dashboard";
+  auth: AuthService;
 
-  constructor(private auth: AuthService) {
-    console.log(auth.getUserInfo().firstName);
-  }
+  constructor() {}
 
   ngOnInit() {}
 }

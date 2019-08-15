@@ -21,7 +21,7 @@
         id="sensor"
         formControlName="sensor"
         multiple
-        [(ngModel)]="station.idSensor"
+        [(ngModel)]="station.sensors"
       >
         <mat-option *ngFor="let sensor of data.sensors" [value]="sensor.id">
           {{ sensor.description }}

@@ -25,13 +25,9 @@ export class DialogComponent implements OnInit {
 
   formValidator() {
     let description: string = this.editSensorForm.controls.description.value;
-    let idStation: number = this.editSensorForm.controls.station.value;
 
-    if (!description && !idStation) return this.dialogRef.close(null);
-    if (
-      description === this.data.sensor.description ||
-      idStation === this.data.sensor.idStation
-    )
+    if (!description) return this.dialogRef.close(null);
+    if (description === this.data.sensor.description)
       return this.dialogRef.close(null);
     this.sensor.id = this.data.sensor.id;
   }
