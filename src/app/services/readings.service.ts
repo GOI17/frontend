@@ -1,21 +1,28 @@
-import { ProvidersService } from './providers.service';
-import { Injectable } from '@angular/core';
+import { HttpClient } from "@angular/common/http";
+import { Injectable } from "@angular/core";
 
 @Injectable()
-export class ReadingsProvider extends ProvidersService {
-    constructor() {
-        super()
-    }
+export class ReadingsProvider {
 
-    getStationReadings(idStation: number) {
-        return this.http.get(`${this.API_URI}/readings/${idStation}`)
-    }
+  private readonly readingsUrl =
+    "https://mysterious-gorge-34627.herokuapp.com/api/readings";
+  
+  constructor(private http: HttpClient) {}
 
-    getStationReadingsSort(idStation: number, sort: string, order: string, page: number) {
-        return this.http.get(`${this.API_URI}/readings/${idStation}`)
-    }
+  getStationReadings(idStation: number) {
+    return this.http.get(`${this.readingsUrl}/${idStation}`);
+  }
 
-    getStationReadingsLimit(idStaion: number) {
-        return this.http.get(`${this.API_URI}/readings/limit/${idStaion}`)
-    }
+  getStationReadingsSort(
+    idStation: number,
+    sort: string,
+    order: string,
+    page: number
+  ) {
+    return this.http.get(`${this.readingsUrl}/${idStation}`);
+  }
+
+  getStationReadingsLimit(idStaion: number) {
+    return this.http.get(`${this.readingsUrl}/limit/${idStaion}`);
+  }
 }

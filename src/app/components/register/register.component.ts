@@ -1,60 +1,58 @@
-import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { User } from 'src/app/models/user';
-import { UsersProvider } from 'src/app/services/users.services';
+import { Component, OnInit } from "@angular/core";
+import { FormGroup, FormBuilder, Validators } from "@angular/forms";
+import { User } from "src/app/models/user";
+import { AuthService } from "src/app/services/auth.service";
+import { Router } from "@angular/router";
 
 @Component({
-  selector: 'app-register',
-  templateUrl: './register.component.html',
-  styleUrls: ['./register.component.css']
+  selector: "app-register",
+  templateUrl: "./register.component.html",
+  styleUrls: ["./register.component.css"]
 })
 export class RegisterComponent implements OnInit {
+  user: User = new User();
+  registerForm: FormGroup;
+  isAdmin: boolean = false;
 
-  user: User = new User()
-  registerForm: FormGroup
-
-  constructor(private formBuilder: FormBuilder, private userProvider: UsersProvider) { }
+  constructor(
+    private formBuilder: FormBuilder,
+    private auth: AuthService,
+    private router: Router
+  ) {}
 
   ngOnInit() {
+    this.verifyUserSession();
+    this.initForm();
+  }
+
+  register() {
+    console.log(this.user);
+    this.auth.register(this.user).subscribe(
+      res => {
+        console.log(res);
+        localStorage.setItem("TOKEN", res.headers.get("X-Auth-Token"));
+        this.router.navigate(["/dashboard"]);
+      },
+      err => console.log(err)
+    );
+  }
+
+  verifyUserSession() {
+    if (this.auth.loggedIn()) {
+      this.router.navigate(["/home"]);
+    }
+  }
+
+  initForm() {
     this.registerForm = this.formBuilder.group({
-      'firstName': [
-        this.user.firstName, [
-          Validators.required
-        ]
+      firstName: [this.user.firstName, [Validators.required]],
+      lastName: [this.user.lastName, [Validators.required]],
+      email: [this.user.email, [Validators.required, Validators.email]],
+      password: [
+        this.user.password,
+        [Validators.required, Validators.minLength(5)]
       ],
-      'lastName': [
-        this.user.lastName, [
-          Validators.required
-        ]
-      ],
-      'email': [
-        this.user.email, [
-          Validators.required,
-          Validators.email
-        ]
-      ],
-      'confirmEmail': ["", [
-        Validators.required,
-        Validators.email
-      ]],
-      'password': [
-        this.user.password, [
-          Validators.required,
-          Validators.minLength(5)
-        ]
-      ],
-      'confirmPassword': ["", [
-        Validators.required,
-        Validators.minLength(5)
-      ]]
-    })
+      isAdmin: [this.user.isAdmin]
+    });
   }
-
-  register(userData: User) {
-    console.log(`Hello: ${userData.firstName} ${userData.lastName}`)
-    console.log(`Hello: ${userData.email}`)
-    console.log(`Hello: ${userData.password}`)
-    this.userProvider.createUser(userData).subscribe(res => console.log(res))
-  }
-
 }

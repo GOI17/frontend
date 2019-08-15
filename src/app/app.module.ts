@@ -1,27 +1,28 @@
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
-import { ProvidersService } from "./services/providers.service";
-import { HttpClientModule } from "@angular/common/http";
+import { BrowserModule } from "@angular/platform-browser";
+import { NgModule } from "@angular/core";
+import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
+import { AuthGuard } from "./services/auth.guard";
+import { AuthService } from "./services/auth.service";
+import { TokenInterceptorService } from "./services/token-interceptor.service";
+import { ReadingsProvider } from "./services/readings.service";
+import { SensorsProviders } from "./services/sensors.service";
+import { StationsProviders } from "./services/stations.service";
 
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
-import { AdminComponent } from './components/admin/admin.component';
-import { UserComponent } from './components/user/user.component';
-import { LoginComponent } from './components/login/login.component';
-import { RegisterComponent } from './components/register/register.component';
-import { SensorsComponent as SensorsAdminComponent } from './components/sensors/sensors.component';
-import { DashboardComponent as DashboardAdminComponent } from './components/dashboard/dashboard.component';
-import { StationsComponent as StationsAdminComponent } from './components/stations/stations.component';
-import { SensorsComponent as SensorsUserComponent } from './components/user/sensors/sensors.component';
-import { DashboardComponent as DashboardUserComponent } from './components/user/dashboard/dashboard.component';
-import { StationsComponent as StationsUserComponent } from './components/user/stations/stations.component';
-import { DialogComponent as AddStationDialogComponent } from './components/dialogs/add-station/dialog.component';
-import { DialogComponent as DeleteStationDialogComponent } from './components/dialogs/delete-station/dialog.component';
-import { DialogComponent as EditStationDialogComponent } from './components/dialogs/edit-station/dialog.component';
-import { DialogComponent as AddSensorDialogComponent } from './components/dialogs/add-sensor/dialog.component';
-import { DialogComponent as DeleteSensorDialogComponent } from './components/dialogs/delete-sensor/dialog.component';
-import { DialogComponent as EditSensorDialogComponent } from './components/dialogs/edit-sensor/dialog.component';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { AppRoutingModule } from "./app-routing.module";
+import { AppComponent } from "./app.component";
+import { MainComponent } from "./components/main/main.component";
+import { LoginComponent } from "./components/login/login.component";
+import { RegisterComponent } from "./components/register/register.component";
+import { SensorsComponent } from "./components/sensors/sensors.component";
+import { DashboardComponent } from "./components/dashboard/dashboard.component";
+import { StationsComponent } from "./components/stations/stations.component";
+import { DialogComponent as AddStationDialogComponent } from "./components/dialogs/add-station/dialog.component";
+import { DialogComponent as DeleteStationDialogComponent } from "./components/dialogs/delete-station/dialog.component";
+import { DialogComponent as EditStationDialogComponent } from "./components/dialogs/edit-station/dialog.component";
+import { DialogComponent as AddSensorDialogComponent } from "./components/dialogs/add-sensor/dialog.component";
+import { DialogComponent as DeleteSensorDialogComponent } from "./components/dialogs/delete-sensor/dialog.component";
+import { DialogComponent as EditSensorDialogComponent } from "./components/dialogs/edit-sensor/dialog.component";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import {
   MatCardModule,
   MatProgressSpinnerModule,
@@ -36,22 +37,18 @@ import {
   MatTableModule,
   MatPaginatorModule,
   MatDialogModule,
-  MatSnackBarModule
-} from '@angular/material';
+  MatSnackBarModule,
+  MatRadioModule,
+  MatSlideToggleModule
+} from "@angular/material";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
-import { UsersProvider } from './services/users.services';
 
 @NgModule({
   declarations: [
     AppComponent,
-    AdminComponent,
-    UserComponent,
-    StationsAdminComponent,
-    SensorsAdminComponent,
-    DashboardAdminComponent,
-    StationsUserComponent,
-    SensorsUserComponent,
-    DashboardUserComponent,
+    StationsComponent,
+    SensorsComponent,
+    DashboardComponent,
     AddStationDialogComponent,
     DeleteStationDialogComponent,
     EditStationDialogComponent,
@@ -59,7 +56,8 @@ import { UsersProvider } from './services/users.services';
     DeleteSensorDialogComponent,
     EditSensorDialogComponent,
     LoginComponent,
-    RegisterComponent
+    RegisterComponent,
+    MainComponent
   ],
   imports: [
     BrowserModule,
@@ -73,6 +71,7 @@ import { UsersProvider } from './services/users.services';
     MatIconModule,
     MatToolbarModule,
     MatButtonModule,
+    MatSlideToggleModule,
     MatFormFieldModule,
     MatInputModule,
     MatSelectModule,
@@ -91,7 +90,18 @@ import { UsersProvider } from './services/users.services';
     DeleteSensorDialogComponent,
     EditSensorDialogComponent
   ],
-  providers: [UsersProvider],
+  providers: [
+    AuthGuard,
+    AuthService,
+    ReadingsProvider,
+    SensorsProviders,
+    StationsProviders,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: TokenInterceptorService,
+      multi: true
+    }
+  ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}

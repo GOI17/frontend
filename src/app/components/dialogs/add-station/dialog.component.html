@@ -1,17 +1,56 @@
-<h1 mat-dialog-title>{{data.title}}</h1>
+<h1 mat-dialog-title>{{ data.title }}</h1>
 <div mat-dialog-content>
-  <form [formGroup]="addStationForm" (ngSubmit)="addStationForm.valid" novalidate>
+  <form
+    [formGroup]="addStationForm"
+    (ngSubmit)="(addStationForm.valid)"
+    novalidate
+  >
     <mat-form-field appearance="outline">
       <mat-label>Description</mat-label>
-      <input id="description" matInput formControlName="description" [(ngModel)]="station.description" type="text">
+      <input
+        id="description"
+        matInput
+        formControlName="description"
+        [(ngModel)]="station.description"
+        type="text"
+      />
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Sensors</mat-label>
+      <mat-select
+        id="sensor"
+        formControlName="sensor"
+        multiple
+        [(ngModel)]="station.idSensor"
+      >
+        <mat-option *ngFor="let sensor of data.sensors" [value]="sensor.id">
+          {{ sensor.description }}
+        </mat-option>
+      </mat-select>
     </mat-form-field>
     <mat-form-field appearance="outline">
       <mat-label>Ip Address</mat-label>
-      <input id="ipAddress" matInput formControlName="ipAddress" [(ngModel)]="station.ipAddress" type="text">
+      <input
+        id="ipAddress"
+        matInput
+        formControlName="ipAddress"
+        [(ngModel)]="station.ipAddress"
+        type="text"
+      />
     </mat-form-field>
     <div class="align-items-center">
-        <button mat-flat-button color="warn" (click)="closeDialog()">Cancel</button>
-        <button mat-flat-button color="accept" type="submit" [mat-dialog-close]="station" [disabled]="!addStationForm.valid">Accept</button>
+      <button mat-flat-button color="warn" (click)="closeDialog()">
+        Cancel
+      </button>
+      <button
+        mat-flat-button
+        color="accept"
+        type="submit"
+        [mat-dialog-close]="station"
+        [disabled]="!addStationForm.valid"
+      >
+        Accept
+      </button>
     </div>
   </form>
 </div>

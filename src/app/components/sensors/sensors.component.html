@@ -1,9 +1,14 @@
 <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
-  <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-    <h1 class="h2">{{title}}</h1>
-    <div class="btn-toolbar mb-2 mb-md-0">
+  <div
+    class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom"
+  >
+    <h1 class="h2">{{ title }}</h1>
+    <div *ngIf="auth.getUserInfo().isAdmin" class="btn-toolbar mb-2 mb-md-0">
       <div class="btn-group mr-2">
-        <button class="btn btn-sm btn-outline-secondary" (click)="addSensorDialog()">
+        <button
+          class="btn btn-sm btn-outline-secondary"
+          (click)="addSensorDialog()"
+        >
           Add sensor <i class="fa fa-plus-circle"></i>
         </button>
       </div>
@@ -12,16 +17,26 @@
   <div class="row" *ngIf="!showSpinner">
     <div class="col-md-4 row-space" *ngFor="let sensor of sensors">
       <div class="card text-center">
-        <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
-          {{sensor.description.toUpperCase()}}
+        <div
+          class="card-header bg-dark text-white d-flex justify-content-between align-items-center"
+        >
+          {{ sensor.description.toUpperCase() }}
           <button class="btn btn-danger" (click)="deleteSensorDialog(sensor)">
             <i class="far fa-trash-alt"></i>
           </button>
         </div>
-        <img src="../../../../assets/img/sensor.png" width="45px" class="card-img-top card-custom-img-top">
+        <img
+          src="../../../../assets/img/sensor.png"
+          width="45px"
+          class="card-img-top card-custom-img-top"
+        />
         <div class="card-body">
-          <p>Station {{sensor.idStation}}</p>
-          <a class="btn btn-info btn-block text-white" (click)="editSensorDialog(sensor)">Edit sensor</a>
+          <p>Station {{ sensor.idStation }}</p>
+          <a
+            class="btn btn-info btn-block text-white"
+            (click)="editSensorDialog(sensor)"
+            >Edit sensor</a
+          >
         </div>
       </div>
     </div>
