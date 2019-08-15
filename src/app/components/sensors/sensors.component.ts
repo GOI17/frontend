@@ -17,15 +17,13 @@ export class SensorsComponent implements OnInit {
   title: string = "Sensors";
   sensors: any = [];
   showSpinner: boolean = true;
+  auth: AuthService;
 
   constructor(
     private sensorsProvider: SensorsProviders,
-    private auth: AuthService,
     private dialog: MatDialog,
     private snackBar: MatSnackBar
-  ) {
-    console.log(auth.getUserInfo());
-  }
+  ) {}
 
   ngOnInit() {
     this.sensorsInit();

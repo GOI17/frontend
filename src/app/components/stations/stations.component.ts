@@ -18,11 +18,11 @@ export class StationsComponent implements OnInit {
   stations: any = [];
   sensors: any = [];
   showSpinner: boolean = true;
+  auth: AuthService;
 
   constructor(
     private stationsProvider: StationsProviders,
     private sensorsProvider: SensorsProviders,
-    private auth: AuthService,
     private dialog: MatDialog,
     private snackBar: MatSnackBar
   ) {}
