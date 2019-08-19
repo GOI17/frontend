@@ -1,5 +1,5 @@
 export class Sensor {
-  id?: number;
+  _id?: number;
   description?: string;
   model?: string;
 }

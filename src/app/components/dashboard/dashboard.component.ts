@@ -11,6 +11,8 @@ import { Station } from "src/app/models/station";
 import "chartjs-plugin-datalabels";
 import { StationsProviders } from "src/app/services/stations.service";
 import { ReadingsProvider } from "src/app/services/readings.service";
+import { NgxMqttLiteService } from "ngx-mqtt-lite";
+import { IClientOptions } from "mqtt";
 
 @Component({
   selector: "app-dashboard",
@@ -42,12 +44,27 @@ export class DashboardComponent implements OnInit {
   constructor(
     private stationsProvider: StationsProviders,
     private readingsProvider: ReadingsProvider,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private mqttService: NgxMqttLiteService
   ) {}
 
   ngOnInit() {
     // this.stationsInit();
     // this.updateData()
+    const clientOptions: IClientOptions = {
+      host: "broker.hivemq.com",
+      port: 8000,
+      path: "/mqtt",
+      protocol: "ws",
+      keepalive: 5
+    };
+    this.mqttService.initializa("", clientOptions);
+    this.mqttService.scope().subscribe(client => {
+      client.subscribe("fooBar");
+    });
+    this.mqttService.listen("message").subscribe(data => {
+      console.log(data);
+    });
     console.log("Dashboard Init");
   }
 

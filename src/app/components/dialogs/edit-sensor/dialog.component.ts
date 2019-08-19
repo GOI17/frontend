@@ -23,18 +23,12 @@ export class DialogComponent implements OnInit {
     private formBuilder: FormBuilder
   ) {}
 
-  formValidator() {
-    let description: string = this.editSensorForm.controls.description.value;
-
-    if (!description) return this.dialogRef.close(null);
-    if (description === this.data.sensor.description)
-      return this.dialogRef.close(null);
-    this.sensor.id = this.data.sensor.id;
-  }
-
   ngOnInit() {
+    this.sensor = this.data.sensor;
+
     this.editSensorForm = this.formBuilder.group({
-      description: [this.sensor.description, [Validators.minLength(3)]]
+      description: [this.sensor.description, [Validators.minLength(3)]],
+      model: [this.sensor.model, [Validators.minLength(3)]]
     });
   }
 

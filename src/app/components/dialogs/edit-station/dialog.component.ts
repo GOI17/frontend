@@ -24,19 +24,14 @@ export class DialogComponent implements OnInit {
   ) {}
 
   formValidator() {
-    let description: string = this.editStationForm.controls.description.value;
     let ipAddress: string = this.editStationForm.controls.ipAddress.value;
 
-    if (!description && !ipAddress) return this.dialogRef.close(null);
-    if (
-      description === this.data.station.description ||
-      ipAddress === this.data.station.ipAddress
-    )
+    if (ipAddress === this.data.station.ipAddress)
       return this.dialogRef.close(null);
-    this.station.id = this.data.station.id;
   }
 
   ngOnInit() {
+    this.station._id = this.data.station._id;
     this.editStationForm = this.formBuilder.group({
       description: [this.station.description, [Validators.minLength(3)]],
       ipAddress: [this.station.description, [Validators.maxLength(16)]],

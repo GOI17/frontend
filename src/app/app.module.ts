@@ -38,10 +38,11 @@ import {
   MatPaginatorModule,
   MatDialogModule,
   MatSnackBarModule,
-  MatRadioModule,
-  MatSlideToggleModule
+  MatSlideToggleModule,
+  MatExpansionModule
 } from "@angular/material";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
+import { NgxMqttLiteService } from "ngx-mqtt-lite";
 
 @NgModule({
   declarations: [
@@ -74,6 +75,7 @@ import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
     MatSlideToggleModule,
     MatFormFieldModule,
     MatInputModule,
+    MatExpansionModule,
     MatSelectModule,
     MatSortModule,
     MatTableModule,
@@ -100,7 +102,8 @@ import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptorService,
       multi: true
-    }
+    },
+    NgxMqttLiteService
   ],
   bootstrap: [AppComponent]
 })

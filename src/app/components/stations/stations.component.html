@@ -1,4 +1,4 @@
-<main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+<main role="main" class="col-11 col-lg-10 offset-lg-1">
   <div
     class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom"
   >
@@ -15,13 +15,17 @@
     </div>
   </div>
   <div class="row" *ngIf="!showSpinner">
-    <div class="col-md-4 row-space" *ngFor="let station of stations">
+    <div class="col-6 col-lg-4 row-space" *ngFor="let station of stations">
       <div class="card text-center">
         <div
           class="card-header bg-dark text-white d-flex justify-content-between align-items-center"
         >
-          STATION {{ station.id }}
-          <button class="btn btn-danger" (click)="deleteStationDialog(station)">
+          {{ station.description.toUpperCase() }} STATION
+          <button
+            *ngIf="auth.getUserInfo().isAdmin"
+            class="btn btn-danger"
+            (click)="deleteStationDialog(station)"
+          >
             <i class="far fa-trash-alt"></i>
           </button>
         </div>
@@ -31,9 +35,20 @@
           class="card-img-top card-custom-img-top"
         />
         <div class="card-body">
-          <p>{{ station.description }}</p>
           <p>{{ station.ipAddress }}</p>
+          <mat-accordion>
+            <mat-expansion-panel>
+              <mat-expansion-panel-header>
+                <mat-panel-title>Sensors list</mat-panel-title>
+              </mat-expansion-panel-header>
+              <div *ngFor="let sensor of station.sensors">
+                <p>{{ sensor.description }}</p>
+              </div>
+            </mat-expansion-panel>
+          </mat-accordion>
+          <hr />
           <a
+            *ngIf="auth.getUserInfo().isAdmin"
             class="btn btn-info btn-block text-white"
             (click)="editStationDialog(station)"
             >Edit station</a

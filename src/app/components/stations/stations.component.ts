@@ -18,13 +18,14 @@ export class StationsComponent implements OnInit {
   stations: any = [];
   sensors: any = [];
   showSpinner: boolean = true;
-  auth: AuthService;
+  // auth: AuthService;
 
   constructor(
     private stationsProvider: StationsProviders,
     private sensorsProvider: SensorsProviders,
     private dialog: MatDialog,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private auth: AuthService
   ) {}
 
   ngOnInit() {
@@ -35,7 +36,7 @@ export class StationsComponent implements OnInit {
   stationsInit() {
     this.stationsProvider.getStations().subscribe(
       res => {
-        this.stations = res["response"];
+        this.stations = res;
         this.showSpinner = false;
       },
       err => console.log(err)
@@ -45,7 +46,8 @@ export class StationsComponent implements OnInit {
   sensorsInit() {
     this.sensorsProvider.getSensors().subscribe(
       res => {
-        this.sensors = res["response"];
+        console.log(res);
+        this.sensors = res;
         this.showSpinner = false;
       },
       err => console.log(err)
@@ -63,8 +65,10 @@ export class StationsComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(res => {
       if (res) {
-        console.log(res);
-        let stationData: Station = res;
+        let stationData: Station;
+        stationData = res;
+        console.log(stationData);
+        console.log(stationData.sensors);
         this.showSpinner = true;
         this.addStation(stationData);
       }
@@ -113,7 +117,8 @@ export class StationsComponent implements OnInit {
   addStation(data: Station) {
     this.stationsProvider.postStation(data).subscribe(
       res => {
-        this.showSnackBar(res["response"]);
+        this.showSnackBar("Station added");
+        console.log(res);
         this.stationsInit();
         this.sensorsInit();
       },
@@ -124,7 +129,7 @@ export class StationsComponent implements OnInit {
   deleteStation(id: number) {
     this.stationsProvider.deleteStation(id).subscribe(
       res => {
-        this.showSnackBar(res["response"]);
+        this.showSnackBar("Station deleted");
         this.stationsInit();
         this.sensorsInit();
       },
@@ -136,7 +141,7 @@ export class StationsComponent implements OnInit {
     this.stationsProvider.putStation(data).subscribe(
       res => {
         console.log(res);
-        this.showSnackBar(res["response"]);
+        this.showSnackBar("Station updated");
         this.stationsInit();
         this.sensorsInit();
       },
