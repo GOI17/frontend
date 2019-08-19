@@ -16,6 +16,17 @@
       />
       <mat-hint>{{ data.sensor.description }}</mat-hint>
     </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Model</mat-label>
+      <input
+        id="model"
+        matInput
+        formControlName="model"
+        [(ngModel)]="sensor.model"
+        type="text"
+      />
+      <mat-hint>{{ data.sensor.model }}</mat-hint>
+    </mat-form-field>
     <div class="align-items-center">
       <button mat-flat-button color="warn" (click)="closeDialog()">
         Cancel
@@ -24,7 +35,6 @@
         mat-flat-button
         color="accept"
         type="submit"
-        (click)="formValidator()"
         [mat-dialog-close]="sensor"
         [disabled]="!editSensorForm.valid"
       >

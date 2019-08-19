@@ -17,12 +17,13 @@ export class SensorsComponent implements OnInit {
   title: string = "Sensors";
   sensors: any = [];
   showSpinner: boolean = true;
-  auth: AuthService;
+  // auth: AuthService;
 
   constructor(
     private sensorsProvider: SensorsProviders,
     private dialog: MatDialog,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private auth: AuthService
   ) {}
 
   ngOnInit() {
@@ -32,7 +33,7 @@ export class SensorsComponent implements OnInit {
   sensorsInit() {
     this.sensorsProvider.getSensors().subscribe(
       res => {
-        this.sensors = res["response"];
+        this.sensors = res;
         this.showSpinner = false;
       },
       err => console.log(err)
@@ -99,7 +100,7 @@ export class SensorsComponent implements OnInit {
     this.sensorsProvider.postSensor(data).subscribe(
       res => {
         console.log(res);
-        this.showSnackBar(res["response"]);
+        this.showSnackBar("Sensor added");
         this.sensorsInit();
       },
       err => console.error(err)
@@ -110,7 +111,7 @@ export class SensorsComponent implements OnInit {
     this.sensorsProvider.deleteSensor(id).subscribe(
       res => {
         console.log(res);
-        this.showSnackBar(res["response"]);
+        this.showSnackBar("Sensor deleted");
         this.sensorsInit();
       },
       err => console.error(err)
@@ -120,8 +121,7 @@ export class SensorsComponent implements OnInit {
   editSensor(data: Sensor) {
     this.sensorsProvider.putSensor(data).subscribe(
       res => {
-        console.log(res);
-        this.showSnackBar(res["response"]);
+        this.showSnackBar("Sensor updated");
         this.sensorsInit();
       },
       err => console.error(err)

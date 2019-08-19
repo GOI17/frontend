@@ -3,6 +3,7 @@ import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { User } from "src/app/models/user";
 import { AuthService } from "src/app/services/auth.service";
 import { Router } from "@angular/router";
+import { MatSnackBar } from "@angular/material";
 
 @Component({
   selector: "app-register",
@@ -17,7 +18,8 @@ export class RegisterComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private auth: AuthService,
-    private router: Router
+    private router: Router,
+    private snackBar: MatSnackBar
   ) {}
 
   ngOnInit() {
@@ -33,7 +35,7 @@ export class RegisterComponent implements OnInit {
         localStorage.setItem("TOKEN", res.headers.get("X-Auth-Token"));
         this.router.navigate(["/dashboard"]);
       },
-      err => console.log(err)
+      err => this.showSnackBar(err.error)
     );
   }
 
@@ -53,6 +55,12 @@ export class RegisterComponent implements OnInit {
         [Validators.required, Validators.minLength(5)]
       ],
       isAdmin: [this.user.isAdmin]
+    });
+  }
+
+  showSnackBar(message: string) {
+    this.snackBar.open(message, "", {
+      duration: 2000
     });
   }
 }

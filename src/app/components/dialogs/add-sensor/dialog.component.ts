@@ -22,7 +22,8 @@ export class DialogComponent implements OnInit {
       description: [
         this.sensor.description,
         [Validators.required, Validators.minLength(3)]
-      ]
+      ],
+      model: [this.sensor.model, [Validators.required, Validators.minLength(3)]]
     });
   }
 

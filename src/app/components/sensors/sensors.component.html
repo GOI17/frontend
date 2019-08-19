@@ -1,4 +1,4 @@
-<main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+<main role="main" class="col-11 col-lg-10 offset-lg-1">
   <div
     class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom"
   >
@@ -15,13 +15,17 @@
     </div>
   </div>
   <div class="row" *ngIf="!showSpinner">
-    <div class="col-md-4 row-space" *ngFor="let sensor of sensors">
+    <div class="col-6 col-lg-4 row-space" *ngFor="let sensor of sensors">
       <div class="card text-center">
         <div
           class="card-header bg-dark text-white d-flex justify-content-between align-items-center"
         >
-          {{ sensor.description.toUpperCase() }}
-          <button class="btn btn-danger" (click)="deleteSensorDialog(sensor)">
+          {{ sensor.description.toUpperCase() }} SENSOR
+          <button
+            *ngIf="auth.getUserInfo().isAdmin"
+            class="btn btn-danger"
+            (click)="deleteSensorDialog(sensor)"
+          >
             <i class="far fa-trash-alt"></i>
           </button>
         </div>
@@ -31,8 +35,9 @@
           class="card-img-top card-custom-img-top"
         />
         <div class="card-body">
-          <p>Station {{ sensor.idStation }}</p>
+          <p>Model {{ sensor.model }}</p>
           <a
+            *ngIf="auth.getUserInfo().isAdmin"
             class="btn btn-info btn-block text-white"
             (click)="editSensorDialog(sensor)"
             >Edit sensor</a
