@@ -10,7 +10,8 @@ export class MqttService {
       host: "broker.hivemq.com",
       port: 8000,
       keepalive: 15,
-      path: "/mqtt"
+      path: "/mqtt",
+      protocol: "wss"
     });
     this.subscribe();
     return this.message();
