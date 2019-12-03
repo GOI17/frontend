@@ -1,16 +1,18 @@
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Injectable } from "@angular/core";
+import { AuthService } from "./auth.service";
 
 @Injectable()
 export class ReadingsProvider {
-
   private readonly readingsUrl =
     "https://mysterious-gorge-34627.herokuapp.com/api/readings";
-  
-  constructor(private http: HttpClient) {}
+
+  constructor(private http: HttpClient, private auth: AuthService) {}
 
   getStationReadings(idStation: number) {
-    return this.http.get(`${this.readingsUrl}/${idStation}`);
+    return this.http.get(`${this.readingsUrl}/${idStation}`, {
+      headers: new HttpHeaders({ "X-Auth-Token": this.auth.getToken() })
+    });
   }
 
   getStationReadingsSort(

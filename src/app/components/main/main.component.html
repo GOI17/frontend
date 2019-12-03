@@ -15,47 +15,51 @@
   <div class="collapse navbar-collapse" id="navbar">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item">
-        <a
+        <h5
           class="nav-link"
           style="cursor:pointer"
           (click)="showComponent = 'dashboard'"
           [ngClass]="{ active: showComponent == 'dashboard' }"
-          >Dashboard</a
         >
+          Dashboard
+        </h5>
       </li>
       <li class="nav-item">
-        <a
+        <h5
           class="nav-link"
           style="cursor:pointer"
           (click)="showComponent = 'stations'"
           [ngClass]="{ active: showComponent == 'stations' }"
-          >Stations</a
         >
+          Stations
+        </h5>
       </li>
       <li class="nav-item">
-        <a
+        <h5
           class="nav-link"
           style="cursor:pointer"
           (click)="showComponent = 'sensors'"
           [ngClass]="{ active: showComponent == 'sensors' }"
-          >Sensors</a
         >
+          Sensors
+        </h5>
       </li>
     </ul>
     <ul class="navbar-nav">
-      <a class="nav-link" style="cursor:pointer" *ngIf="auth.loggedIn()"
-        >Hello, {{ auth.getUserInfo().firstName }}
-        {{ auth.getUserInfo().lastName }}</a
-      >
+      <h5 class="nav-link" style="cursor:pointer" *ngIf="auth.loggedIn()">
+        Hello, {{ auth.getUserInfo().firstName }}
+        {{ auth.getUserInfo().lastName }}
+      </h5>
     </ul>
     <ul class="navbar-nav">
-      <a
+      <h5
         class="nav-link"
         style="cursor:pointer"
         *ngIf="auth.loggedIn()"
         (click)="auth.logout()"
-        >Logout</a
       >
+        Logout
+      </h5>
     </ul>
   </div>
 </nav>

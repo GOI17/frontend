@@ -43,6 +43,7 @@ import {
 } from "@angular/material";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { NgxMqttLiteService } from "ngx-mqtt-lite";
+import { MqttService } from "./services/mqtt.service";
 
 @NgModule({
   declarations: [
@@ -98,6 +99,7 @@ import { NgxMqttLiteService } from "ngx-mqtt-lite";
     ReadingsProvider,
     SensorsProviders,
     StationsProviders,
+    MqttService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptorService,

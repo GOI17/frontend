@@ -1,19 +1,28 @@
-// import * as mqtt from "async-mqtt";
-// import { NgModule } from "@angular/core";
+import { NgxMqttLiteService } from "ngx-mqtt-lite";
+import { Injectable } from "@angular/core";
 
-// @NgModule()
-// export class MqttService {
-//   private readonly client = mqtt.connect("soldier.cloudmqtt.com:17022", {
-//     username: "eeduyeks",
-//     password: "TOBqmj1jWl_p"
-//   });
+@Injectable()
+export class MqttService {
+  constructor(private ngxMqttLiteService: NgxMqttLiteService) {}
 
-//   constructor() {}
+  init(id): any {
+    this.ngxMqttLiteService.initializa("", {
+      host: "broker.hivemq.com",
+      port: 8000,
+      keepalive: 15,
+      path: "/mqtt"
+    });
+    this.subscribe();
+    return this.message();
+  }
 
-//   async subscribe() {
-//     var message = await this.client.subscribe(
-//       "testingfourseasonstationservice/1"
-//     );
-//     console.log(message);
-//   }
-// }
+  subscribe() {
+    this.ngxMqttLiteService.scope().subscribe(client => {
+      client.subscribe("fourseason/values");
+    });
+  }
+
+  message() {
+    return this.ngxMqttLiteService.listen("message");
+  }
+}
