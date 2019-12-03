@@ -9,7 +9,7 @@ import { AuthService } from "src/app/services/auth.service";
 export class MainComponent implements OnInit {
   showComponent = "dashboard";
 
-  constructor(private auth: AuthService) {}
+  constructor(public auth: AuthService) {}
 
   ngOnInit() {}
 }

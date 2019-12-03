@@ -25,7 +25,7 @@ export class StationsComponent implements OnInit {
     private sensorsProvider: SensorsProviders,
     private dialog: MatDialog,
     private snackBar: MatSnackBar,
-    private auth: AuthService
+    public auth: AuthService
   ) {}
 
   ngOnInit() {
