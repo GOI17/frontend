@@ -11,8 +11,7 @@ import { Station } from "src/app/models/station";
 import "chartjs-plugin-datalabels";
 import { StationsProviders } from "src/app/services/stations.service";
 import { ReadingsProvider } from "src/app/services/readings.service";
-import { NgxMqttLiteService } from "ngx-mqtt-lite";
-import { IClientOptions } from "mqtt";
+import { MqttService } from "src/app/services/mqtt.service";
 
 @Component({
   selector: "app-dashboard",
@@ -25,18 +24,16 @@ export class DashboardComponent implements OnInit {
   title: string = "Dashboard";
   tbTitle: string = "Readings";
   displayedColumns: string[] = [
-    "id",
-    "date",
-    "idStation",
-    "temperature",
-    "humidity",
-    "windQuality",
-    "powder"
+    "Temperature (deg)",
+    "Humidity (pct)",
+    "Wind Quality (ppm)",
+    "Dust (ppm)",
+    "Date"
   ];
   chart: any = [];
   readings: Reading[] = [];
   stations: Station[] = [];
-  reading: Reading = new Reading();
+  reading = null;
   id: number;
   timer: any;
   dataSource;
@@ -45,32 +42,12 @@ export class DashboardComponent implements OnInit {
     private stationsProvider: StationsProviders,
     private readingsProvider: ReadingsProvider,
     private snackBar: MatSnackBar,
-    private mqttService: NgxMqttLiteService
+    private mqttService: MqttService
   ) {}
 
   ngOnInit() {
-    // this.stationsInit();
-    // this.updateData()
-    const clientOptions: IClientOptions = {
-      host: "broker.hivemq.com",
-      port: 8000,
-      path: "/mqtt",
-      protocol: "ws",
-      keepalive: 5
-    };
-    this.mqttService.initializa("", clientOptions);
-    this.mqttService.scope().subscribe(client => {
-      client.subscribe("fooBar");
-    });
-    this.mqttService.listen("message").subscribe(data => {
-      console.log(data);
-    });
+    this.stationsInit();
     console.log("Dashboard Init");
-  }
-
-  ngOnDestroy() {
-    clearInterval(this.timer);
-    console.log("Dashboard exit");
   }
 
   onKey(value: string) {
@@ -92,6 +69,10 @@ export class DashboardComponent implements OnInit {
     }
   }
 
+  test(evt) {
+    console.log(evt);
+  }
+
   applyFilter(filterValue: string) {
     filterValue = filterValue.trim();
     filterValue = filterValue.toLowerCase();
@@ -100,60 +81,60 @@ export class DashboardComponent implements OnInit {
 
   stationsInit() {
     this.stationsProvider.getStations().subscribe(
-      res => {
-        this.stations = res["response"];
-        this.id = this.stations[0]["id"];
-        this.readingsInit(this.id);
+      (res: Station[]) => {
+        this.stations = res;
+        this.id = this.stations[0]._id;
+        this.tableInit(this.id);
       },
       err => console.error(err)
     );
   }
 
-  readingsInit(id: number) {
-    this.id = id;
-    this.readingsProvider.getStationReadings(id).subscribe(
-      res => {
-        this.reading.temperature = res["response"][0].temperature;
-        this.reading.dust = res["response"][0].powder;
-        this.reading.humidity = res["response"][0].humidity;
-        this.reading.windQuality = res["response"][0].windQuality;
-      },
-      err => console.log(err)
-    );
-    this.readingsProvider.getStationReadingsLimit(id).subscribe(
-      res => {
-        this.readings = res["response"];
-        let temperature = res["response"].map(res => res.temperature);
-        let powder = res["response"].map(res => res.powder);
-        let humidity = res["response"].map(res => res.humidity);
-        let windQuality = res["response"].map(res => res.windQuality);
-        let allDates = res["response"].map(res => res.date);
-        this.chartInit(
-          "chart",
-          allDates,
-          temperature,
-          powder,
-          humidity,
-          windQuality
-        );
-        this.tableInit();
-      },
-      err => console.log(err)
-    );
-  }
-
-  tableInit() {
-    this.readingsProvider.getStationReadings(this.id).subscribe(
-      res => {
-        console.log(res);
-        this.readings = res["response"];
+  tableInit(idStation) {
+    idStation == null ? (idStation = this.id) : (this.id = idStation);
+    this.readingsProvider.getStationReadings(idStation).subscribe(
+      (res: Reading[]) => {
+        this.readings = res;
+        this.readingsInit();
         this.dataSource = new MatTableDataSource(this.readings);
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
         if (this.readings.length == 0)
           return this.showSnackBar("Empty readings");
       },
-      err => console.error(err)
+      err => {
+        console.error(err);
+        this.showSnackBar("Server error");
+      }
+    );
+  }
+
+  readingsInit() {
+    this.mqttService.init(this.id).subscribe(data => {
+      console.log(JSON.parse(data[1].toString()));
+      this.reading = JSON.parse(data[1].toString());
+      this.addData(
+        this.chart,
+        Date.now().toString(),
+        this.reading.values.t,
+        this.reading.values.d,
+        this.reading.values.h,
+        this.reading.values.w
+      );
+      this.removeData(this.chart);
+    });
+    let dates = this.readings.map((v: any) => v.creationDate);
+    let temperature = this.readings.map((v: any) => v.values.temperature);
+    let humidity = this.readings.map((v: any) => v.values.humidity);
+    let dust = this.readings.map((v: any) => v.values.dust);
+    let windQuality = this.readings.map((v: any) => v.values.windQuality);
+    this.chartInit(
+      "chart",
+      dates.slice(-10),
+      temperature.slice(-10),
+      dust.slice(-10),
+      humidity.slice(-10),
+      windQuality.slice(-10)
     );
   }
 
@@ -161,7 +142,7 @@ export class DashboardComponent implements OnInit {
     id: string,
     labels: any,
     temperature: any,
-    powder: any,
+    dust: any,
     humidity: any,
     windQuality: any
   ) {
@@ -220,11 +201,11 @@ export class DashboardComponent implements OnInit {
       type: "line",
       options: options,
       data: {
-        labels: labels.reverse(),
+        labels: labels,
         datasets: [
           {
-            label: "Temperature",
-            data: temperature.reverse(),
+            label: "Temperature (deg)",
+            data: temperature,
             lineTension: 0,
             backgroundColor: "red",
             borderColor: "red",
@@ -233,8 +214,8 @@ export class DashboardComponent implements OnInit {
             fill: false
           },
           {
-            label: "Powder",
-            data: powder.reverse(),
+            label: "Dust (ppm)",
+            data: dust,
             lineTension: 0,
             backgroundColor: "blue",
             borderColor: "blue",
@@ -243,8 +224,8 @@ export class DashboardComponent implements OnInit {
             fill: false
           },
           {
-            label: "Humidity",
-            data: humidity.reverse(),
+            label: "Humidity (pct)",
+            data: humidity,
             lineTension: 0,
             backgroundColor: "green",
             borderColor: "green",
@@ -253,8 +234,8 @@ export class DashboardComponent implements OnInit {
             fill: false
           },
           {
-            label: "Wind Quality",
-            data: windQuality.reverse(),
+            label: "Wind Quality (ppm)",
+            data: windQuality,
             lineTension: 0,
             backgroundColor: "orange",
             borderColor: "orange",
@@ -275,35 +256,17 @@ export class DashboardComponent implements OnInit {
     chart.update();
   }
 
-  addData(chart, label, temperature, powder, humidity, windQuality) {
+  addData(chart, label, temperature, dust, humidity, windQuality) {
     chart.data.labels.push(label);
     chart.data.datasets.forEach(data => {
-      if (data.label == "Temperature") return data.data.push(temperature);
-      if (data.label == "Powder") return data.data.push(powder);
-      if (data.label == "Humidity") return data.data.push(humidity);
-      if (data.label == "Wind Quality") return data.data.push(windQuality);
+      if (data.label == "Temperature (deg)") return data.data.push(temperature);
+      if (data.label == "Dust (ppm)") return data.data.push(dust);
+      if (data.label == "Humidity (pct)") return data.data.push(humidity);
+      if (data.label == "Wind Quality (ppm)")
+        return data.data.push(windQuality);
     });
     chart.update();
   }
-
-  // getData() {
-  //   socket.on('chartData', (res) => {
-  //     let temperature = res['response'].map(res => res.temperature).values().next().value
-  //     let powder = res['response'].map(res => res.powder).values().next().value
-  //     let humidity = res['response'].map(res => res.humidity).values().next().value
-  //     let windQuality = res['response'].map(res => res.windQuality).values().next().value
-  //     let date = res['response'].map(res => res.date).values().next().value
-  //     this.addData(this.chart, date, temperature, powder, humidity, windQuality)
-  //     this.removeData(this.chart)
-  //   })
-  // }
-
-  // updateData() {
-  //   this.timer = setInterval(() => {
-  //     socket.emit('chartId', { body: this.id, ok: true })
-  //   }, 5500)
-  //   this.getData()
-  // }
 
   showSnackBar(message: string) {
     this.snackBar.open(message, "", {
